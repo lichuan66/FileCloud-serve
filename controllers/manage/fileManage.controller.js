@@ -231,49 +231,6 @@ class FileManage {
     if (/pdf/.test(type)) {
       let data = fs.readFile(filePath, async (err, buffer) => {
         const funcType = "getFile";
-        // const pdfDoc = await PDFDocument.load(buffer);
-        // const pages = await pdfDoc.getPages();
-        // const imgBufferList = {};
-        // const start = Date.now();
-        // for (let i = 0; i < 100; i++) {
-        //   let funcNext = null;
-        //   const waittingPromise = new Promise((resolve, reject) => {
-        //     funcNext = () => resolve();
-        //   });
-        //   const pdfPagePath = path.join(currentPath, `.image/${i}.png`);
-        //   const writeStream = fs.createWriteStream(pdfPagePath);
-        //   gm(filePath)
-        //     .selectFrame(i)
-        //     .resize(800, 800)
-        //     .toBuffer("PNG", function (err, buffer) {
-        //       if (err) {
-        //         console.log(err);
-        //         funcNext();
-        //         return;
-        //       }
-        //       const data = `data:image/png;base64,${buffer.toString("base64")}`;
-        //       imgBufferList[i] = data;
-        //       console.log(i);
-        //       funcNext();
-        //     });
-        //   // .stream("png")
-        //   // .pipe(writeStream)
-        //   // writeStream.on("finish", () => {
-        //   //   let data = fs.readFile(filePath, (err, buffer) => {
-        //   //     if (err) {
-        //   //       console.log(i, err);
-        //   //       return;
-        //   //     }
-        //   //     const data = `data:image/png;base64,${buffer.toString("base64")}`;
-        //   //     imgBufferList[i] = data;
-        //   //     fs.rmSync(pdfPagePath);
-        //   //     funcNext();
-        //   //   });
-        //   // });
-        //   await waittingPromise;
-        // }
-        // const end = Date.now();
-        // console.log((end - start) / 1000);
         const bufferStr = `${buffer.toString("base64")}`;
         ws.sendToClient({
           funcType,
