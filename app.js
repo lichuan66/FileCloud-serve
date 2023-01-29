@@ -25,7 +25,7 @@ app.use(
 app.use(cors());
 app.use(json());
 app.use(logger());
-app.use(require("koa-static")(__dirname + "/public"));
+app.use(require("koa-static")(__dirname + "/public/dist"));
 
 app.use(
   views(__dirname + "/views", {
