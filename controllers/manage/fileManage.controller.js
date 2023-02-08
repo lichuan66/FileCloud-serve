@@ -7,6 +7,7 @@ const gm = require("gm");
 const { fromPath, fromBuffer } = require("pdf2pic");
 const { PDFDocument } = require("pdf-lib");
 const fsExtra = require("fs-extra");
+const send = require("koa-send");
 const ws = require("../../config/config.websocket");
 
 class FileManage {
@@ -229,44 +230,31 @@ class FileManage {
     const modifyTime = dayjs(stats.mtime).format("YYYY-MM-DD hh:mm");
     let metaData = {};
     if (/pdf/.test(type)) {
-      let data = fs.readFile(filePath, async (err, buffer) => {
-        const funcType = "getFile";
-        const bufferStr = `${buffer.toString("base64")}`;
-        ws.sendToClient({
-          funcType,
-          userId: "admin",
-          type,
-          name: fileName,
-          data: bufferStr,
-        });
-        console.log("完成");
-      });
       metaData = {
         name: fileName,
         modifyTime,
         type,
+        url: `http://127.0.0.1:8877/api/fileManage/getFileUrl?routerPath=${routerPath}&fileName=${fileName}`,
         data: null,
       };
     } else if (/image/.test(type)) {
-      let data = fs.readFile(filePath, (err, buffer) => {
-        const funcType = "getFile";
-        const data = `data:image/png;base64,${buffer.toString("base64")}`;
-        ws.sendToClient({
-          funcType,
-          userId: "admin",
-          modifyTime,
-          type,
-          data,
-        });
-      });
       metaData = {
         name: fileName,
         modifyTime,
         type,
+        url: `http://127.0.0.1:8877/api/fileManage/getFileUrl?routerPath=${routerPath}&fileName=${fileName}`,
         data: null,
       };
     }
     ctx.body = { data: metaData };
+  }
+  async getFileUrl(ctx) {
+    const { routerPath, fileName } = ctx.request.query;
+    const storePath = path.join(__dirname, "../../store/admin");
+    const currentPath = path.join(storePath, routerPath);
+    const filePath = path.join(currentPath, fileName);
+    const content = await fs.promises.readFile(filePath);
+    ctx.body = content;
   }
 }
 

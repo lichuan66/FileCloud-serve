@@ -16,6 +16,9 @@ class Ws {
       ws.on("message", (msg) => {
         console.log("server receive msg: ", msg.toString());
       });
+      ws.on("close", () => {
+        console.log("closed");
+      });
     });
   }
   sendToClient(value) {
@@ -28,6 +31,10 @@ class Ws {
       if (client.readyState === WebSocket.OPEN && client.userId === userId) {
         client.send(JSON.stringify(value));
         iskeep = true;
+      }
+      if (client.isAlive === false) {
+        //如果非优雅断开 则强制停止 如网线被拔掉
+        this.online--;
       }
     });
     return iskeep;

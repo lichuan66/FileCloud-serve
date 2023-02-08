@@ -1,6 +1,10 @@
 const { jwtVerify } = require("../utils/jwtUtils");
 
-const noIntercept = [/\/api\/user\/userLogin/];
+const noIntercept = [
+  /\/api\/user\/userLogin/,
+  /\/api\/user\/signUp/,
+  /\/api\/fileManage\/getFileUrl/,
+];
 
 class Intercept {
   async intercept(ctx, next) {

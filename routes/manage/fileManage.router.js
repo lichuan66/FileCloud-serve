@@ -6,6 +6,7 @@ const {
   enterFolder,
   uploadFile,
   getFileData,
+  getFileUrl,
 } = require("../../controllers/manage/fileManage.controller");
 const multer = require("@koa/multer");
 const upload = multer();
@@ -18,5 +19,6 @@ router.post("/deleteFolder", deleteFolder);
 router.post("/enterFolder", enterFolder);
 router.post("/uploadFile", upload.single("file"), uploadFile);
 router.post("/getFileData", getFileData);
+router.get("/getFileUrl", getFileUrl);
 
 module.exports = router;
